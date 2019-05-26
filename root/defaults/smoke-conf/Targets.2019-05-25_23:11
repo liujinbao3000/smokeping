@@ -1,0 +1,52 @@
+*** Targets ***
+
+probe = FPing
+
+menu = Top
+title = Network Latency Grapher
+remark = Welcome to the SmokePing website of WORKS Company. \
+         Here you will learn all about the latency of our network.
+
++ InternetSites
+
+menu = 网站
+title = 网站 
+
+++ BaiDu
+menu = 百度
+title = 百度
+host = baidu.com
+
+++ SoHu
+menu = 搜狐
+title = 搜狐
+host = sohu.com
+
+++ TengXun
+menu = 腾讯
+title = 腾讯
+host = qq.com
+
++ DNS
+menu = DNS
+title = DNS
+
+++ ALi_DNS
+menu = 阿里
+title = 阿里
+host = 223.5.5.5
+
+++ BaiDu_DNS
+menu = 百度
+title = 百度
+host = 180.76.76.76
+
+++ 114_DNS
+menu = 114
+title = 114
+host = 114.114.114.114
+
++ Other
+menu = 其它
+title = 其它
+

@@ -1,0 +1,91 @@
+#!/bin/sh
+#Shell菜单演示
+#变量"configpath"的路径根据实际情况修改
+configpath=/var/local/date/smokeping/config
+function menu ()
+{
+ cat << EOF
+----------------------------------------
+|***************菜单主页***************|
+----------------------------------------
+`echo -e "\033[35m 容器名字必须为"smokeping"功能才生效\033[0m"`
+`echo -e "\033[35m 可以在任意选择界面按"Ctrl+c"键退出\033[0m"`
+`echo -e "\033[35m 1)重启smokeping\033[0m"`
+`echo -e "\033[35m 2)停止smokeping\033[0m"`
+`echo -e "\033[35m 3)显示smokeping日志\033[0m"`
+`echo -e "\033[35m 4)备份当前监控主机文件\033[0m"`
+`echo -e "\033[35m 5)恢复监控主机文件\033[0m"`
+`echo -e "\033[35m 6)增加被监控主机\033[0m"`
+`echo -e "\033[35m 7)使用vi编辑配置文件\033[0m"`
+`echo -e "\033[35m 8)显示config目录\033[0m"`
+`echo -e "\033[35m 9)显示所有容器名字 状态 端口\033[0m"`
+`echo -e "\033[35m 0)退出\033[0m"`
+EOF
+read -p "请输入功能对应的数字：" num1
+while [ $num1 != '0' ];do
+case $num1 in
+ 1)
+clear
+docker restart smokeping
+menu
+  ;;
+ 2)
+clear
+docker stop smokeping
+menu
+  ;;
+ 3)
+clear
+docker logs smokeping
+menu
+  ;;
+ 4)
+cp -f $configpath/Targets $configpath/Targets.$(date "+%Y-%m-%d_%H:%M")
+clear
+menu
+  ;;
+ 5)
+clear
+ls -l /var/local/date/smokeping/config/Targets*|awk '{print $9}'|awk -F"Targets." '/Targets./{print $2}'
+read -p "输入要恢复的文件名:" filename
+cp -f $configpath/Targets.$filename $configpath/Targets
+echo "修改主机配置文件后需要重启smokeping才能正常显示(有时可能需要重启2次)"
+menu
+  ;;
+ 6)
+ clear
+ read -p "自定义主机编号：" num2
+ read -p "请输入主机IP地址：" ip
+cat >> /var/local/date/smokeping/config/Targets << EOF
+
+++ $num2
+menu =$ip
+title = $ip
+host = $ip
+EOF
+echo "修改主机配置文件后需要重启smokeping才能正常显示(有时可能需要重启2次)"
+pause
+menu
+;;
+ 7)
+ vi $configpath/Targets
+clear
+menu
+ ;;
+ 8)
+clear
+ cd  $configpath
+ pwd
+menu
+ ;;
+ 9)
+ clear
+ docker inspect -f='{{.Name}} {{.State.Status}} {{.NetworkSettings.Ports}}' $(docker ps -a -q)
+menu
+ ;;
+ 0)
+  exit 0
+esac
+done
+}
+menu
