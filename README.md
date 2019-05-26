@@ -4,7 +4,7 @@
 3. 生成镜像,`名称/项目:标签`
 4. 查看镜像
    ```
-   https://github.com/liujinbao3000/smokeping.git
+   git clone https://github.com/liujinbao3000/smokeping.git
    cd smokeping
    docker build -t liujinbao3000/smokeping:latest
    docker images
