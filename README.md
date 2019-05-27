@@ -18,8 +18,8 @@
      -e PGID=1000 \
      -e TZ=Asia/Shanghai \
      -p 8088:80 \
-     -v /var/local/date/smokeping/config:/config \
-     -v /var/local/date/smokeping/data:/data \
+     -v /var/local/docker/smokeping/config:/config \
+     -v /var/local/docker/smokeping/data:/data \
      --restart unless-stopped \
    liujinbao3000/smokeping
    ```
