@@ -1,7 +1,8 @@
 #!/bin/sh
 #Shell菜单演示
 #变量"configpath"的路径根据实际情况修改
-configpath=/var/local/date/smokeping/config
+configpath=/var/local/docker/smokeping/config
+container=smokeping
 function menu ()
 {
  cat << EOF
@@ -18,8 +19,9 @@ function menu ()
 `echo -e "\033[35m 6)增加被监控主机\033[0m"`
 `echo -e "\033[35m 7)使用vi编辑配置文件\033[0m"`
 `echo -e "\033[35m 8)显示config目录\033[0m"`
-`echo -e "\033[35m 9)显示所有容器名字 状态 端口\033[0m"`
+`echo -e "\033[35m 9)显示所有容器名字 状态\033[0m"`
 `echo -e "\033[35m 0)退出\033[0m"`
+`echo -e "\033[35m del)删除smokeping容器\033[0m"`
 EOF
 read -p "请输入功能对应的数字：" num1
 while [ $num1 != '0' ];do
@@ -46,17 +48,17 @@ menu
   ;;
  5)
 clear
-ls -l /var/local/date/smokeping/config/Targets*|awk '{print $9}'|awk -F"Targets." '/Targets./{print $2}'
+ls -l $configpath/Targets*|awk '{print $9}'|awk -F"Targets." '/Targets./{print $2}'
 read -p "输入要恢复的文件名:" filename
 cp -f $configpath/Targets.$filename $configpath/Targets
-echo "修改主机配置文件后需要重启smokeping才能正常显示(有时可能需要重启2次)"
+echo "修改主机配置文件后可能需要多次刷新浏览器才能正常显示"
 menu
   ;;
  6)
  clear
  read -p "自定义主机编号：" num2
  read -p "请输入主机IP地址：" ip
-cat >> /var/local/date/smokeping/config/Targets << EOF
+cat >> $configpath/Targets << EOF
 
 ++ $num2
 menu =$ip
@@ -74,13 +76,18 @@ menu
  ;;
  8)
 clear
- cd  $configpath
- pwd
+  echo $configpath
 menu
  ;;
  9)
  clear
- docker inspect -f='{{.Name}} {{.State.Status}} {{.NetworkSettings.Ports}}' $(docker ps -a -q)
+ docker inspect -f='{{.Name}} {{.State.Status}}' $(docker ps -a -q)
+menu
+ ;;
+ del)
+ clear
+ docker stop $container
+ docker rm $container
 menu
  ;;
  0)
