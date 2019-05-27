@@ -27,3 +27,7 @@
    ```
    http://IP:8088
    ```
+1. 运行管理脚本
+   ```
+   bash /var/local/docker/smokeping/config/smokeping
+   ```
