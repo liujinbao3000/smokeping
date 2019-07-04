@@ -34,13 +34,13 @@ format = Median RTT %f seconds
 
 + overview
 
-width = 600
-height = 50
+width = 1024
+height = 100
 range = 10h
 
 + detail
 
-width = 600
+width = 1000
 height = 200
 unison_tolerance = 2
 
